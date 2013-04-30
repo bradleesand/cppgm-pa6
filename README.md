@@ -14,7 +14,14 @@ The starter kit can be obtained from:
 
     $ git clone git://git.cppgm.org/pa6.git
 
-It contains a stub implementation of `recog` with some starter code, a compiled reference implementation and a test suite.
+It contains:
+
+- a stub implementation of `recog` with some starter code
+- a compiled reference implementation `recog-ref`
+- a test suite.
+- a stdin/stdout wrapper for `recog-ref` called `recog-ref-stdin` that also has the `--trace` switch enabled
+- the grammar for this assignment called `pa6.gram`
+- a html grammar explorer of `pa6.gram` in the sub-directory `grammar/`
 
 You will also want to reuse your Preprocessor/Lexer from PA1-PA5.
 
@@ -28,13 +35,13 @@ with the same relaxations as PA5
 
 ### Output Format
 
-`recog` will write the following to <outfile>:
+`recog` shall write the following to `<outfile>`:
 
 The first line is:
 
     recog <N>
     
-where <N> is the number of srcfiles given on the command line
+where `<N>` is the number of srcfiles given on the command line
 
 The following N lines shall be:
 
@@ -49,11 +56,11 @@ Where:
 
 If an error occurs at any stage from opening the file, during translation, or the token sequence does not match `translation-unit`, than output `BAD` for that file.  (Do not `EXIT_FAILURE`)
 
-If no errors occur and the token sequence matches `translation-unit` output `OK` for that file.
+If no errors occur and the token sequence matches `translation-unit`, output `OK` for that file.
 
 ### Standard Output / Error
 
-The standard output and standard error are ignored for `recog`, however it is suggested that you should output a parse tree (in a format of your choosing) to standard output on success.
+Standard output and standard error are ignored for `recog`, however it is suggested that you should output a parse tree (in a text format of your choosing) to standard output on success.
 
 You _should not_ try to mimick the parse tree output format of the reference implementation.  It is presented only as a rough outline of its internal parse tree for debugging purposes, and not designed to be diff-equivilant to your implementation.
 
@@ -74,7 +81,7 @@ We have introduced several special tokens in the grammar.  They are:
 
 #### `TT_IDENTIFIER`
 
-These are normal `identifiers` identifier tokens from previous assignments
+These are the normal `identifier` tokens from previous assignments
 
 #### `TT_LITERAL`
 
@@ -96,7 +103,7 @@ Note that a `ST_ZERO` token is also a `TT_LITERAL` token.
 
 These tokens are both identifiers with the spelling `override` and `final` respectively.  Note that they are not keywords and so will match `identifier` in other contexts.  They are _context-sensetive keywords_.  That is they are only considered keywords when used in the correct context.  See 2.11.2 for clarification.
 
-Note that `ST_OVERIDE` and `ST_FINAL` are both also `TT_IDENTIFIER` tokens.
+Note that `ST_OVERRIDE` and `ST_FINAL` are both also `TT_IDENTIFIER` tokens.
 
 #### `ST_NONPAREN`
 
@@ -127,7 +134,7 @@ We then define a new grammar `close-angle-bracket`:
 
 and replace occurences of `OP_GT` that have a "close an angle bracket pair" semantic use with it.  This allows for constructs like `T<U<3>>` to parse correctly.  See 14.2.3.
 
-To support this we redefine `shift-operator` to:
+To support this we redefine `shift-operator` (and other uses of `OP_RSHIFT`) to:
 
 	shift-operator:
 		OP_LSHIFT
@@ -136,6 +143,8 @@ To support this we redefine `shift-operator` to:
 So `OP_RSHIFT` no longer occurs in the grammar.
 
 ### Mock Name Lookup
+
+We will explain briefly what "real name lookup" is, and then explain the "mock name lookup" you will use instead in PA6.
 
 In order to parse C++ successfully and efficiently you must categorize identifiers, such as `foo`, and `simple-template-ids` such as `foo<bar>`, as to what kind of thing they identify.  These are called names.  The process of identifying name categories is called _name lookup_, and discussed in Clause 3.
  
@@ -201,10 +210,10 @@ Here, to match the nonterminal `foo`, a `class-name` is required, followed by an
 
 - So first we check if the next token is an identifier.
 - Then we check if it contains the letter `C`.
-- We check if it is also `template-name` (contains `T`), and if is we reduced a `simple-template-id`.
-- We then have parsed the `class-name` (for example `C1` or `TC2<bar>`) and move on to the `enum-name`.
+- We check if it is also `template-name` (contains `T`), and only if it does, we reduce a `simple-template-id`.
+- We have now succesfully parsed a `class-name` (for example `C1` or `TC2<bar>`), and move on to the `enum-name`.
 - We check that it is an identifier and that it contains a letter `E`, for example `Ebaz`.
-- If it is we return the `enum-name` and have successfully parsed `foo`.
+- If it is we return the `enum-name`, and have successfully parsed `foo`.
 
 ### PA6 Grammar
 
@@ -215,7 +224,8 @@ It uses an extended BNF format with the following operators:
     foo?       means 0 or 1 foo in sequence
     foo*       means 0 or more foo
     foo+       means 1 or more foo
-    (foo)      parens groups concat symbols together for application of other operators
+    (foo)      parenthesis group symbols together for
+    				application of the above operators
 
 Line splices are ignored.  Alternative bodies are given indented, one per logical line.
 
@@ -223,11 +233,11 @@ For each non-terminal `foo`, an analysis of the non-terminal `foo` is given in `
 
 Each analysis includes:
 
-    USED: The non-terminals that refer to `foo`
+    USED: The non-terminals that refer to `foo` (back references)
     FIRST: The set of tokens that can possibly start `foo`
     FOLLOW: The set of tokens that can possibly occur after `foo`
     
-Following this is the grammar for `foo`, and then a breadth first list of the grammars it refers to.  That is, first the grammars that `foo` uses are listed, followed by the grammars that are used by those grammars, and so on until all nested referenced grammars are shown.
+Following these items is the grammar for `foo`, and then a breadth first list of the grammars it refers to.  That is, first the grammars that `foo` uses are listed (first degree), followed by the grammars that are used by those grammars (second degree), and so on until all nested referenced grammars are shown.
 
 Each non-terminal is html-linked to its own analysis page.
 
@@ -256,13 +266,13 @@ You will need to implement this rule while parsing a `decl-specifier-seq`.
 
 #### `closing-angle-bracket`
 
-When angle brackets are used to delimit a sequence of tokens, for example `static_cast<C1>(bar)`, `Tfoo<1,2,3>`, or `T1<T2<C>>`, there are problems created to do with when `>` and `>>` are used as operators.
+When angle brackets are used to delimit a sequence of tokens, for example `static_cast<C1>(bar)`, `Tfoo<1,2,3>`, or `T1<T2<C>>`, there are problems caused by the fact that `>` and `>>` can also be used as operators.
 
 How to deal with this is described in 14.2.3.
 
 The first non-nested `closing-angle-bracket` encountered is taken to close the bracket pair.
 
-C++ tokens nest correctly in terms of the four kinds of brackets `()`, `[]`, `{}` and `<>`.  For the three non-angle brackets types (`()`, `[]`, `{}`) this is true without any caveats, as they are only even used as matching brackets.  Closing angle brackets however look exactley the same as the operators `>` and `>>`, and these operators are not used in a balanced fashion.
+C++ tokens nest correctly in terms of the four kinds of brackets `()`, `[]`, `{}` and `<>`.  For the three non-angle brackets types (`()`, `[]`, `{}`) this is true without any caveats, as those tokens are only ever used as brackets.  Closing angle brackets however look exactley the same as the operators `>` and `>>`, and so these tokens are not used in a balanced fashion.
 
 What the rule in 14.2.3 is saying is that when you are inside an angle bracket pair `<>`, the next `closing-angle-bracket` parsed _at the same nesting level as the opening angle bracket_ closes it, and is never parsed as part of an `>` operator or `>>` operator.
 
@@ -282,13 +292,13 @@ You should pay attention to the two special types of ambiguities mentioned in 6.
 
 ### Ill-formed but Syntactically Valid
 
-In some cases there are constructs that could be reduced to the PA6 grammar, but could never be part of a valid C++ program.  In some of those cases the reference implementation will reject them, in others it will accept them and leave them to fail later in semantic analysis.  In general it is a grey area and a design decision.  We expect that your implementation matches the reference implementation at least in its result for the cases in the provided test suite.  If there is a case that you think falls into this category, and are not sure about, please bring it up on forum.cppgm.org for discussion.  In general the best policy is to accept these constructs, and defer as much logic as possible until semantic analysis, when a parse tree is available.
+In some cases there are constructs that could be reduced to the PA6 grammar, but could never be part of a valid C++ program.  In some of those cases the reference implementation will reject them, in others it will accept them and leave them to fail later in semantic analysis.  In general it is a grey area and a design decision.  We expect that your implementation matches the reference implementation at least in its result for the cases in the provided test suite.  If there is a case that you think falls into this category, and are not sure about, please bring it up on forum.cppgm.org for discussion.  In general the best policy is to accept these constructs, and defer as much logic as possible until semantic analysis, when a disambiguated parse tree is available.
 
 ### Design Notes (Optional)
 
-As usual these design notes are optional, there is more than one way to do it and we suggest one possible implementation.
+As usual these design notes are optional, there is more than one way to do it, and we suggest one possible implementation.
 
-To start with you should review the grammar in the standard Annex A.3 through A.13, side-by-side with the `pa6.gram` file.  There is an __Index of grammar productions__ at page 1273 of N3485.  If there is a nonterminal name that you don't recognize or understand, use the Index to look up where that grammar is discussed in the main text.  You can also use the grammar explorer in the `grammar` directory of the starter kit to get more information about a nonterminal.
+To start with you should review the grammar in the standard Annex A.3 through A.13, side-by-side with the `pa6.gram` file.  There is an __Index of grammar productions__ at page 1273 of N3485.  If there is a nonterminal name that you don't recognize or understand, use that Index to look up where that grammar is discussed in the main text.  You can also use the grammar explorer in the `grammar` directory of the starter kit to get more information about a nonterminal.
 
 Once you are comfortable with the grammar, you will need to prepare your parsing infrastructure.  You should prepare a `Token` class if you have not already done so, and place the tokens produced from your PA5 code into it as a `vector<Token>`, replacing occurences of `OP_RSHIFT` with the two tokens `ST_RSHIFT_1` and `ST_RSHIFT_2`, and terminating the sequence with a `ST_EOF` token.
 
@@ -323,7 +333,7 @@ If the parse function fails it shall return an Error AST, and shall reset the lo
 
 It is easy to see from here how to get from this architecture to a recursive descent parser.  Furthermore you can use `FIRST` and `FOLLOW` (when they are small) to make predictive decisions to cut down parse time.
 
-You can read the first half of chapter 4 of the dragon book for a refresher on top down parsing.
+You can reread the first half of chapter 4 of the dragon book for a refresher on top down parsing.
 
 In cases where you need to parse a sequence of the same non-terminal (`foo*` or `foo+`), in almost all cases the C++ grammar will allow you to do this greedily.  That is you can match as many as you can, and you will usually not need to backtrack, you can usually fail the parent parse function without trying shorter sequences.
 
@@ -335,7 +345,7 @@ That means on entry to `parse_translation_unit` you are at nesting level 0 and n
 
 When you are parsing an expression involving the non-bracket form of `OP_GT` or `ST_RSHIFT_1/ST_RSHIFT_2` (ie right shift and greater than) and the current bracket type is angle brackets, refuse to match those operators, because they are reserved for use by `close-angle-bracket`
 
-Note that it is possible to parse in a much more efficient way (with much better prediction) than the way that `recog-ref` does.  This can be achieved by combining certain similar production prefixes together, effectively doing some localized bottom up parsing.  Better performance can also be realized through earlier detection using the lookahead.  However for this assignment we are mainly concerned with recognizing the correct unambiguous parse of the translation unit.  Once correct, and regression testing is in place, you can add these optimizations incrementally.
+Note that it is possible to parse in a much more efficient way (with much better prediction) than the way that `recog-ref` does.  This can be achieved by combining certain similar production prefixes together, effectively doing some localized bottom up parsing.  Better performance can also be realized through earlier detection using the lookahead, combining expression parsing with a precedence table as mentioned in PA3, and many other things.  However for this assignment we are mainly concerned with recognizing the correct unambiguous parse of the translation unit.  Once correct, and regression testing is in place, you can always add these optimizations incrementally later.
 
 ### `--trace` flag (optional)
 
