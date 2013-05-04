@@ -76,8 +76,6 @@ int main(int argc, char** argv)
 				out << srcfile << " BAD" << endl;
 			}
 		}
-
-		out << "done" << endl;
 	}
 	catch (exception& e)
 	{
