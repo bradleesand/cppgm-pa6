@@ -50,7 +50,9 @@
                                         identifier: TT_IDENTIFIER:bar
                                         nested-name-specifier: 
                                             nested-name-specifier-root: 
-                                                namespace-name: TT_IDENTIFIER:foo
+                                                type-name: 
+                                                    class-name: 
+                                                        TT_IDENTIFIER: TT_IDENTIFIER:Cfoo
                                             nested-name-specififier-suffix-seq: empty
                     02: 
                         expression-statement: 
@@ -93,7 +95,7 @@
                                         nested-name-specifier: 
                                             nested-name-specifier-root: 
                                                 OP_COLON2: OP_COLON2
-                                                namespace-name: TT_IDENTIFIER:foo
+                                                namespace-name: TT_IDENTIFIER:Nfoo
                                             nested-name-specififier-suffix-seq: empty
                     04: 
                         expression-statement: 

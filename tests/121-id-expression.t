@@ -12,7 +12,7 @@ int main()
 	operator int;
 	operator"" foo;
 	::x;
-	::x::y;
-	x::y;
+	::Nx::y;
+	Yx::y;
 }
 

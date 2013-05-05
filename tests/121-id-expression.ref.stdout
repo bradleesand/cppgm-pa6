@@ -158,7 +158,7 @@
                                             nested-name-specifier: 
                                                 nested-name-specifier-root: 
                                                     OP_COLON2: OP_COLON2
-                                                    namespace-name: TT_IDENTIFIER:x
+                                                    namespace-name: TT_IDENTIFIER:Nx
                                                 nested-name-specififier-suffix-seq: empty
                                             unqualified-id: 
                                                 TT_IDENTIFIER: TT_IDENTIFIER:y
@@ -171,7 +171,8 @@
                                         qualified-id: 
                                             nested-name-specifier: 
                                                 nested-name-specifier-root: 
-                                                    namespace-name: TT_IDENTIFIER:x
+                                                    type-name: 
+                                                        typedef-name: TT_IDENTIFIER:Yx
                                                 nested-name-specififier-suffix-seq: empty
                                             unqualified-id: 
                                                 TT_IDENTIFIER: TT_IDENTIFIER:y
