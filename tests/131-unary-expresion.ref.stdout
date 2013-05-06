@@ -138,12 +138,7 @@
                             expression: 
                                 KW_SIZEOF: KW_SIZEOF
                                 OP_DOTS: OP_DOTS
-                                unary-expression: 
-                                    primary-expression: 
-                                        primary-expression: 
-                                            id_expression: 
-                                                unqualified-id: 
-                                                    TT_IDENTIFIER: TT_IDENTIFIER:x
+                                TT_IDENTIFIER: TT_IDENTIFIER:x
                     12: 
                         expression-statement: 
                             OP_SEMICOLON: OP_SEMICOLON
