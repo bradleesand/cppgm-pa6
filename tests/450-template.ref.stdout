@@ -124,11 +124,9 @@
                                                     template-argument-list: 
                                                         00: 
                                                             template-argument: 
-                                                                constant-expression: 
-                                                                    primary-expression: 
-                                                                        id_expression: 
-                                                                            unqualified-id: 
-                                                                                TT_IDENTIFIER: TT_IDENTIFIER:n
+                                                                id-expression: 
+                                                                    unqualified-id: 
+                                                                        TT_IDENTIFIER: TT_IDENTIFIER:n
                                                         01: 
                                                             template-argument: 
                                                                 type-id: 
