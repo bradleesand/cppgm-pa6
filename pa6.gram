@@ -478,7 +478,7 @@ qualified-namespace-specifier:
 	nested-name-specifier? namespace-name
 
 using-declaration:
-	KW_USING KW_TEMPLATE? nested-name-specifier unqualified-id OP_SEMICOLON
+	KW_USING KW_TYPENAME? nested-name-specifier unqualified-id OP_SEMICOLON
 	KW_USING OP_COLON2 unqualified-id OP_SEMICOLON
 
 using-directive:
