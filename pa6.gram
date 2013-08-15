@@ -56,8 +56,8 @@ nested-name-specifier:
 	nested-name-specifier-root nested-name-specifier-suffix*
 	
 nested-name-specifier-root:
-    OP_COLON2	
-    type-name OP_COLON2
+	OP_COLON2	
+	type-name OP_COLON2
 	namespace-name OP_COLON2
 	decltype-specifier OP_COLON2
 
