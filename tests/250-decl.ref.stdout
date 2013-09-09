@@ -22,14 +22,12 @@
         asm-definition: 
             TT_LITERAL: TT_LITERAL:"foo"
     02: 
-        empty-declaration: empty
-    03: 
         alias-declaration: 
             identifier: TT_IDENTIFIER:foo
             type-id: 
                 type-specifier-seq: 
                     00: KW_INT
-    04: 
+    03: 
         namespace-definition: 
             TT_IDENTIFIER: TT_IDENTIFIER:N
             namespace-body: 
@@ -52,7 +50,7 @@
                                                         TT_IDENTIFIER: TT_IDENTIFIER:c
                                         noptr-declartor-suffix-seq: empty
                                     ptr-operator-seq: empty
-    05: 
+    04: 
         namespace-alias-definition: 
             TT_IDENTIFIER: TT_IDENTIFIER:N3
             qualified-namespace-specifier: 
@@ -62,7 +60,7 @@
                         OP_COLON2: OP_COLON2
                         namespace-name: TT_IDENTIFIER:N1
                     nested-name-specififier-suffix-seq: empty
-    06: 
+    05: 
         template-declaration: 
             declaration: 
                 simple-declaration: 
