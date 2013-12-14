@@ -54,7 +54,7 @@ qualified-id:
 
 nested-name-specifier:
 	nested-name-specifier-root nested-name-specifier-suffix*
-	
+
 nested-name-specifier-root:
 	OP_COLON2	
 	type-name OP_COLON2
@@ -94,7 +94,7 @@ lambda-declarator:
 
 postfix-expression:
 	postfix-root postfix-suffix*
-	
+
 postfix-root:
 	primary-expression
 	simple-type-specifier OP_LPAREN expression-list? OP_RPAREN
@@ -196,7 +196,7 @@ multiplicative-operator:
 	OP_STAR
 	OP_DIV
 	OP_MOD
-	
+
 additive-expression:
 	multiplicative-expression (additive-operator multiplicative-expression)*
 
@@ -213,7 +213,7 @@ shift-operator:
 
 relational-expression:
 	shift-expression (relational-operator shift-expression)*
-	
+
 relational-operator:
 	OP_LT
 	OP_GT
@@ -226,10 +226,10 @@ equality-expression:
 equality-operator:
 	OP_EQ
 	OP_NE
-	
+
 and-expression:
 	equality-expression (OP_AMP equality-expression)*
-	
+
 exclusive-or-expression:
 	and-expression (OP_XOR and-expression)*
 
@@ -238,7 +238,7 @@ inclusive-or-expression:
 
 logical-and-expression:
 	inclusive-or-expression (OP_LAND inclusive-or-expression)*
-	
+
 logical-or-expression:
 	logical-and-expression (OP_LOR logical-and-expression)*
 
@@ -329,7 +329,7 @@ jump-statement:
 
 declaration-statement:
 	block-declaration
-	
+
 declaration:
 	block-declaration
 	function-definition
@@ -350,13 +350,13 @@ block-declaration:
 	static_assert-declaration
 	alias-declaration
 	opaque-enum-declaration
-	
+
 alias-declaration:
 	KW_USING TT_IDENTIFIER attribute-specifier* OP_ASS type-id OP_SEMICOLON
-	
+
 simple-declaration:
 	attribute-specifier* decl-specifier-seq init-declarator-list? OP_SEMICOLON
-	
+
 static_assert-declaration:
 	KW_STATIC_ASSERT OP_LPAREN constant-expression OP_COMMA TT_LITERAL OP_RPAREN OP_SEMICOLON
 
@@ -461,7 +461,7 @@ enumerator-definition:
 
 enumerator:
 	TT_IDENTIFIER
-	
+
 namespace-definition:
 	KW_INLINE? KW_NAMESPACE TT_IDENTIFIER? OP_LBRACE namespace-body OP_RBRACE
 
